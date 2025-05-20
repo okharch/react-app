@@ -1,8 +1,15 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 function TodoList() {
-  const [tasks, setTasks] = useState([])
+  const [tasks, setTasks] = useState(() => {
+    const saved = localStorage.getItem('todos')
+    return saved ? JSON.parse(saved) : []
+  })
   const [input, setInput] = useState('')
+
+  useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(tasks))
+  }, [tasks])
 
   const addTask = () => {
     if (input.trim() !== '') {
